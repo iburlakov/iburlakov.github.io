@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      background: #fff;
+      color: #1a1a1a;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 48px auto;
+      padding: 0 32px;
+    }
+
+    header {
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .meta {
+      margin-top: 6px;
+      color: #444;
+      font-size: 0.95rem;
+    }
+    .meta span::before { content: " · "; }
+    .meta span:first-child::before { content: ""; }
+
+    .cv-links {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      font-size: 0.875rem;
+    }
+    .cv-links a { color: #1a1a1a; text-decoration: none; }
+    .cv-links a:hover { text-decoration: underline; }
+
+    section { margin-bottom: 28px; }
+
+    h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #888;
+      border-bottom: 1px solid #e5e5e5;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+
+    .bio-text {
+      font-size: 0.95rem;
+      color: #333;
+      max-width: 600px;
+    }
+
+    .skill-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 10px;
+      align-items: baseline;
+    }
+    .skill-group-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #666;
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+    .skill-group-items {
+      font-size: 0.9rem;
+      color: #1a1a1a;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 0.85rem;
+      color: #888;
+      text-decoration: none;
+    }
+    .back-link:hover { color: #333; }
+
+    @media print {
+      .back-link { display: none; }
+      body { font-size: 11pt; }
+      main { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a href="/" class="back-link">← Back</a>
+
+    <header>
+      <h1 id="cv-name"></h1>
+      <p class="meta" id="cv-meta"></p>
+      <div class="cv-links" id="cv-links"></div>
+    </header>
+
+    <section>
+      <h2>Profile</h2>
+      <p class="bio-text" id="cv-bio"></p>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <div id="cv-skills"></div>
+    </section>
+  </main>
+
+  <script src="../profile.js"></script>
+  <script>
+    (function () {
+      const p = PROFILE;
+      document.title = "CV — " + p.name;
+      document.getElementById("cv-name").textContent = p.name;
+
+      const metaParts = [p.title, p.location, p.openToWork ? p.availability : null].filter(Boolean);
+      document.getElementById("cv-meta").innerHTML =
+        metaParts.map((t) => "<span>" + t + "</span>").join("");
+
+      const links = [{ label: p.email, href: "mailto:" + p.email }].concat(
+        p.elsewhere.map((l) => ({ label: l.label, href: l.href }))
+      );
+      document.getElementById("cv-links").innerHTML = links
+        .map((l) => '<a href="' + l.href + '">' + l.label + "</a>")
+        .join("");
+
+      document.getElementById("cv-bio").textContent = p.bio;
+
+      document.getElementById("cv-skills").innerHTML = p.skills
+        .map(
+          (g) =>
+            '<div class="skill-group">' +
+            '<span class="skill-group-label">' + g.category + "</span>" +
+            '<span class="skill-group-items">' + g.items.join(", ") + "</span>" +
+            "</div>"
+        )
+        .join("");
+    })();
+  </script>
+</body>
+</html>
