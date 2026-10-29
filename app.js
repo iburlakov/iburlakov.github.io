@@ -64,18 +64,34 @@
 
   // ── Dark mode ───────────────────────────────────────────────────────────────
 
+  // Dark between 19:00 and 07:00 local time, unless the visitor picked a theme
+  function isNight() {
+    const h = new Date().getHours();
+    return h >= 19 || h < 7;
+  }
+
+  function savedTheme() {
+    try { return localStorage.getItem("theme"); } catch (e) { return null; }
+  }
+
   function applyTheme(dark) {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     const icon = document.getElementById("theme-icon");
     if (icon) icon.className = dark ? "fa-regular fa-sun" : "fa-regular fa-moon";
-    try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
   }
 
   // Sync icon with theme already applied by the inline head script
   applyTheme(document.documentElement.dataset.theme === "dark");
 
+  // Follow the clock while the page stays open
+  setInterval(function () {
+    if (!savedTheme()) applyTheme(isNight());
+  }, 60 * 1000);
+
   document.getElementById("theme-toggle").addEventListener("click", function () {
-    applyTheme(document.documentElement.dataset.theme !== "dark");
+    const dark = document.documentElement.dataset.theme !== "dark";
+    applyTheme(dark);
+    try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
   });
 
   // ── Copy email ──────────────────────────────────────────────────────────────
