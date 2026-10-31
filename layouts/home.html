@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ .Plain | strings.TrimSpace }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <div class="bg-animation" id="bg-animation" aria-hidden="true"></div>
+
+  <main class="page">
+
+    <header class="profile">
+      {{- with .Params.photo }}
+      <img class="profile-pic" src="{{ . }}" alt="Portrait of {{ $.Title }}">
+      {{- end }}
+      <h1 class="profile-name">{{ .Title }}</h1>
+      <p class="profile-desc">{{ delimit (slice .Params.role .Params.location) " · " }}</p>
+      <div class="social-icons">
+        {{- range .Params.socials }}
+        <a href="{{ .href }}" target="_blank" rel="noreferrer" aria-label="{{ .label }}"><i class="{{ .icon }}"></i></a>
+        {{- end }}
+        <a href="mailto:{{ .Params.email }}" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
+      </div>
+    </header>
+
+    <section class="about-card">
+      <h2>About</h2>
+      <div class="about-text">{{ .Content }}</div>
+    </section>
+
+    <nav class="links" aria-label="Links">
+      {{- range .Params.socials }}
+      {{ partial "link-card.html" (dict "href" .href "icon" .icon "title" .label "desc" .handle) }}
+      {{- end }}
+      <div class="link-card">
+        <div class="link-icon"><i class="fa-regular fa-envelope"></i></div>
+        <a href="mailto:{{ .Params.email }}" class="link-body">
+          <p class="link-title">Email</p>
+          <p class="link-desc">{{ .Params.email }}</p>
+        </a>
+        <button type="button" id="copy-email" class="copy-btn" data-email="{{ .Params.email }}">Copy</button>
+      </div>
+      {{- with .Params.cvUrl }}
+      {{ partial "link-card.html" (dict "href" . "icon" "fa-solid fa-file-arrow-down" "title" "Download CV" "desc" "PDF résumé") }}
+      {{- end }}
+    </nav>
+
+    <footer class="site-footer">© {{ now.Year }} {{ .Title }}</footer>
+
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -10,3 +10,8 @@
 # Node (if tooling is ever added)
 node_modules/
 npm-debug.log*
+
+# Hugo build output
+public/
+resources/_gen/
+.hugo_build.lock

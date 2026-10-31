@@ -1,0 +1,6 @@
+baseURL = "https://about.iburlakov.me/"
+locale = "en"
+title = "Ivan Burlakov"
+
+# One-page site: no tags/categories pages or RSS feed
+disableKinds = ["taxonomy", "term", "rss"]
