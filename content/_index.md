@@ -3,8 +3,8 @@ title: Ivan Burlakov
 role: Senior Software Engineer/Engineering Team Lead
 location: Frankfurt am Main, Germany
 email: iburlakov@gmail.com
-cvUrl: /assets/ivan_burlakov_2025.pdf
-photo: /assets/photo_44830027.png
+cvUrl: /assets/ivan_burlakov_2026.pdf
+photo: /assets/photo_44833792.jpg
 
 socials:
   - label: GitHub
